@@ -8,27 +8,31 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/coding-2-try-phaser-KKStoyanov/devassets/citations.md"
   },
   {
-    "revision": "ccd0f68c9dc7cd68ea1e98bf43aa7c90",
+    "revision": "ea801e18a4f14b0c4740b555536b414e",
+    "url": "/coding-2-try-phaser-KKStoyanov/devassets/explosion.png"
+  },
+  {
+    "revision": "6387e4bedb194c28efe573c1cc5ce303",
     "url": "/coding-2-try-phaser-KKStoyanov/devassets/ship.png"
   },
   {
-    "revision": "ea0ad2cda5a9dbbe332fd61e4c2f5700",
+    "revision": "4888982b102ce1a7c57fb9f8c129e63d",
     "url": "/coding-2-try-phaser-KKStoyanov/devassets/ship2.png"
   },
   {
-    "revision": "5896d72a8a287a6e5f3272bfb9eadca8",
+    "revision": "15d30c88882683af9f5092c13dc13853",
     "url": "/coding-2-try-phaser-KKStoyanov/devassets/ship3.png"
   },
   {
-    "revision": "060a445cb78bf9fe8fec",
-    "url": "/coding-2-try-phaser-KKStoyanov/devgen.main.8a63400409585466a8db.bundle.js"
+    "revision": "01e958152cc84a505f8f",
+    "url": "/coding-2-try-phaser-KKStoyanov/devgen.main.70c61d2628b22a264be2.bundle.js"
   },
   {
     "revision": "201b65bee9df6270f739",
     "url": "/coding-2-try-phaser-KKStoyanov/devgen.vendors.a047ee0740c7d21714d9.bundle.js"
   },
   {
-    "revision": "289d80a1a05b0387f1f5720422958031",
+    "revision": "8d5c4477ff0205b1ef8f0f0dc88a17dc",
     "url": "/coding-2-try-phaser-KKStoyanov/devindex.html"
   },
   {
