@@ -14,7 +14,10 @@ export default class MainScene extends Phaser.Scene {
   projectiles: Phaser.Physics.Arcade.Group;
   enemies: Phaser.Physics.Arcade.Group;
   scoreLabel: Phaser.GameObjects.BitmapText;
+  hpLabel: Phaser.GameObjects.BitmapText;
+  gameOverLabel: Phaser.GameObjects.BitmapText;
   score: number;
+  hp: number;
 
   constructor() {
     super({ key: 'MainScene' });
@@ -37,11 +40,11 @@ export default class MainScene extends Phaser.Scene {
     this.ship2.play("ship2_anim");
     this.ship3.play("ship3_anim");
 
-    this.ship1.setInteractive();
+    /*this.ship1.setInteractive();
     this.ship2.setInteractive();
     this.ship3.setInteractive();
 
-    this.input.on('gameobjectdown', this.destroyShip, this);
+    this.input.on('gameobjectdown', this.destroyShip, this);*/
 
     this.physics.world.setBoundsCollision();
 
@@ -49,7 +52,7 @@ export default class MainScene extends Phaser.Scene {
     this.projectiles = this.physics.add.group();
     
     for(let i = 0; i < this.enemies.getChildren().length; i++){
-      this.add.existing(this.enemies.getChildren()[i]);
+      this.physics.add.existing(this.enemies.getChildren()[i]);
     }
 
     let maxObjects: number = 4;
@@ -91,8 +94,18 @@ export default class MainScene extends Phaser.Scene {
     graphics.fillPath();
 
     this.score = 0;
+    this.hp = 100;
 
     this.scoreLabel = this.add.bitmapText(10, 5, "pixelFont", "SCORE", 16);
+    this.hpLabel = this.add.bitmapText(200, 5, "pixelFont", "HP", 16);
+
+    this.physics.add.collider(this.projectiles, this.powerUps, function(projectile, powerUp){
+      projectile.destroy();
+    });
+
+    this.physics.add.overlap(this.player, this.powerUps, this.pickPowerUp, undefined, this);
+    this.physics.add.overlap(this.player, this.enemies, this.hurtPlayer, undefined, this);
+    this.physics.add.overlap(this.projectiles, this.enemies, this.hitEnemy, undefined, this);
   }
 
   update() {
@@ -113,34 +126,38 @@ export default class MainScene extends Phaser.Scene {
       let beam = this.projectiles.getChildren()[i];
       beam.update();
     }
-    this.physics.add.collider(this.projectiles, this.powerUps, function(projectile, powerUp){
-      projectile.destroy();
-    });
-
-    this.physics.add.overlap(this.player, this.powerUps, this.pickPowerUp);
-    this.physics.add.overlap(this.player, this.enemies, this.hurtPlayer);
-    this.physics.add.collider(this.projectiles, this.enemies, this.hitEnemy);
 
     let scoreFormated = this.zeroPad(this.score, 5);
     this.scoreLabel.text = "SCORE " + scoreFormated;
+
+    let hpFormated = this.zeroPad(this.hp, 3);
+    this.hpLabel.setText("HP " + hpFormated);
+
+    if(this.hp == 0){
+      this.player.play("explode");
+      this.player.disableBody(true, true);
+      this.spacebar.enabled = false;
+      this.gameOverLabel = this.add.bitmapText(this.scale.width / 2 - 30, this.scale.height / 2, "pixelFont", "Game Over!", 16);
+    }
   }
   hitEnemy(projectile, enemy){
     projectile.destroy();
-    enemy.destroy();
-    this.score -= 5;
+    this.resetShipPos(enemy);
+    this.score += 20;
     //this.scoreLabel.text = "SCORE " + this.score;
     //this.player.scale = this.player.scale + 2;
 
   }
 
-  hurtPlayer(player, enemy){
-    enemy.destroy();
+  hurtPlayer(player: Phaser.GameObjects.GameObject, enemy){
+    this.resetShipPos(enemy);
+    this.hp -= 20;
   }
 
   pickPowerUp(player, powerUp){
     powerUp.disableBody(true, true);
     this.score += 10;
-    //this.scoreLabel.text = "SCORE " + this.score;
+    this.scoreLabel.setText("SCORE " + this.score);
   }
 
   moveShip(ship, speed){
